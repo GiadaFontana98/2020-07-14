@@ -1,8 +1,22 @@
 package it.polito.tdp.PremierLeague.model;
 
-public class Team {
+public class Team implements Comparable <Team>{
 	Integer teamID;
 	String name;
+	int punt;
+
+	public int getPunt() {
+		return punt;
+	}
+	public void vince()
+	{
+		this.punt+=3;
+		
+	}
+	public void pareggia()
+	{
+		this.punt+=1;
+	}
 
 	public Team(Integer teamID, String name) {
 		super();
@@ -53,6 +67,11 @@ public class Team {
 		} else if (!teamID.equals(other.teamID))
 			return false;
 		return true;
+	}
+	@Override
+	public int compareTo(Team t) {
+	return -(this.getPunt()-t.getPunt());
+	
 	}
 	
 }
