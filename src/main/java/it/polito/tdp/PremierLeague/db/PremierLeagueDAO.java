@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import it.polito.tdp.PremierLeague.model.Action;
+import it.polito.tdp.PremierLeague.model.Adiacenza;
 import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Player;
 import it.polito.tdp.PremierLeague.model.Team;
@@ -83,11 +84,12 @@ public class PremierLeagueDAO {
 		}
 	}
 	
-	public List<Match> listAllMatches(){
-		String sql = "SELECT m.MatchID, m.TeamHomeID, m.TeamAwayID, m.teamHomeFormation, m.teamAwayFormation, m.resultOfTeamHome, m.date, t1.Name, t2.Name   "
-				+ "FROM Matches m, Teams t1, Teams t2 "
-				+ "WHERE m.TeamHomeID = t1.TeamID AND m.TeamAwayID = t2.TeamID";
-		List<Match> result = new ArrayList<Match>();
+	public List<Adiacenza> listAllMatches(){
+		String sql = "SELECT  DISTINCT  t1.TeamID, m1.ResultOfTeamHome "
+				+ "FROM matches m1, teams t1 "
+				+ "WHERE m1.TeamHomeID=t1.TeamID "
+				+ "GROUP BY t1.TeamID, m1.ResultOfTeamHome";
+		List<Adiacenza> result = new ArrayList<>();
 		Connection conn = DBConnect.getConnection();
 
 		try {
@@ -96,11 +98,10 @@ public class PremierLeagueDAO {
 			while (res.next()) {
 
 				
-				Match match = new Match(res.getInt("m.MatchID"), res.getInt("m.TeamHomeID"), res.getInt("m.TeamAwayID"), res.getInt("m.teamHomeFormation"), 
-							res.getInt("m.teamAwayFormation"),res.getInt("m.resultOfTeamHome"), res.getTimestamp("m.date").toLocalDateTime(), res.getString("t1.Name"),res.getString("t2.Name"));
+				result.add( new Adiacenza(res.getInt("t1.TeamID"), res.getInt("m1.ResultOfTeamHome")));
 				
 				
-				result.add(match);
+				
 
 			}
 			conn.close();

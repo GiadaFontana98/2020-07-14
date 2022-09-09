@@ -36,7 +36,7 @@ public class FXMLController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbSquadra"
-    private ComboBox<Team> cmbSquadra; // Value injected by FXMLLoader
+    private ComboBox<?> cmbSquadra; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtN"
     private TextField txtN; // Value injected by FXMLLoader
@@ -54,13 +54,9 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-       txtResult.appendText(model.creaGrafo());
-       this.cmbSquadra.getItems().addAll(model.getVertici());
-       if(cmbSquadra.getValue()!=null)
-    		   {
-    	   for(Team t : model.peggiori(cmbSquadra.getValue()))
-    	 txtResult.appendText("" + t);
-       }
+    	txtResult.clear();
+    	txtResult.appendText(model.creaGrafo());
+    
     }
 
     @FXML
